@@ -25,7 +25,11 @@ def get_all_nguyenLieu_api():
 def update_nguyenLieu_api(maNL):
     try:
         data  = request.json
-        update_nguyenLieu(maNL, data['TenNL'], data['Soluong'], data['DonGiaNhap'], data['DonViTinh'])
+        result = update_nguyenLieu(maNL, data['TenNL'], data['Soluong'], data['DonGiaNhap'], data['DonViTinh'])
+        
+        if result is None:
+            return jsonify({"error": "NguyenLieu not found"}), 404
+        
         return jsonify({'message': 'NguyenLieu updated successfully'}), 200
     except Exception as e:
         return jsonify({'message_error': str(e)}), 500
@@ -33,7 +37,11 @@ def update_nguyenLieu_api(maNL):
 @nguyenLieu_bp.route('/api/nguyenlieu/<string:maNL>', methods=['DELETE'])
 def delete_nguyenLieu_api(maNL):
     try:
-        delete_nguyenLieu(maNL)
+        result = delete_nguyenLieu(maNL)
+        
+        if result is None:
+            return jsonify({"error": "NguyenLieu not found"}), 404
+        
         return jsonify({'message': 'NguyenLieu deleted successfully'}), 200
     except Exception as e:
         return jsonify({'message_error': str(e)}), 500

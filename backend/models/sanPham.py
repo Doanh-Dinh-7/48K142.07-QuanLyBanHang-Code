@@ -21,20 +21,41 @@ def get_all_sanPham():
     cursor.close()
     conn.close()
     return sanPham
-
+    
 def update_sanPham(maSP, tenSP, donGiaBan):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("EXEC UpdateSanPham  @MaSP = ?, @TenSP = ?, @DonGiaBan = ?;", 
+    try:
+        cursor = conn.cursor()
+        
+        # Kiểm tra sản phẩm có tồn tại không
+        if not get_info_by_id("SanPham", "MaSP", maSP):
+            return None
+        cursor.execute("EXEC UpdateSanPham  @MaSP = ?, @TenSP = ?, @DonGiaBan = ?;", 
                     (maSP, tenSP, donGiaBan))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+        conn.close()
+
 def delete_sanPham(maSP):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM SanPham WHERE MaSP = ?", (maSP))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    try:
+        cursor = conn.cursor()
+        
+        # Kiểm tra sản phẩm có tồn tại không
+        if not get_info_by_id("SanPham", "MaSP", maSP):
+            return None
+        
+        cursor.execute("DELETE FROM SanPham WHERE MaSP = ?", (maSP))
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+        conn.close()   

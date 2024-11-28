@@ -25,7 +25,11 @@ def get_all_nhaCungCap_api():
 def update_nhaCungCap_api(maNCC):
     try:
         data  = request.json
-        update_nhaCungCap(maNCC, data['TenNCC'], data['DiaChi'])
+        result = update_nhaCungCap(maNCC, data['TenNCC'], data['DiaChi'])
+        
+        if result is None:
+            return jsonify({"error": "NhaCungCap not found"}), 404
+        
         return jsonify({'message': 'NhaCungCap updated successfully'}), 200
     except Exception as e:
         return jsonify({'message_error': str(e)}), 500
@@ -33,7 +37,11 @@ def update_nhaCungCap_api(maNCC):
 @nhaCungCap_bp.route('/api/nhacungcap/<string:maNCC>', methods=['DELETE'])
 def delete_nhaCungCap_api(maNCC):
     try:
-        delete_nhaCungCap(maNCC)
+        result = delete_nhaCungCap(maNCC)
+        
+        if result is None:
+            return jsonify({"error": "NhaCungCap not found"}), 404
+        
         return jsonify({'message': 'NhaCungCap deleted successfully'}), 200
     except Exception as e:
         return jsonify({'message_error': str(e)}), 500

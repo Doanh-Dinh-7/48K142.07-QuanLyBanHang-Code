@@ -24,17 +24,39 @@ def get_all_nguyenLieu():
 
 def update_nguyenLieu(maNL, tenNL, soLuong, donGiaNhap, donViTinh):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("EXEC UpdateNguyenLieu @MaNL = ?, @TenNL = ?, @SoLuong = ?, @DonGiaNhap = ?, @DonViTinh = ?;", 
-                   (maNL, tenNL, soLuong, donGiaNhap, donViTinh ))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
+    try:
+        cursor = conn.cursor()
+        
+        # Kiểm tra nguyên liệu có tồn tại không
+        if not get_info_by_id("NguyenLieu", "MaNL", maNL):
+            return None
+        
+        cursor.execute("EXEC UpdateNguyenLieu @MaNL = ?, @TenNL = ?, @SoLuong = ?, @DonGiaNhap = ?, @DonViTinh = ?;", 
+                        (maNL, tenNL, soLuong, donGiaNhap, donViTinh ))
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+        conn.close()
+
 def delete_nguyenLieu(maNL):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM NguyenLieu WHERE MaNL = ?", (maNL,))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    try:
+        cursor = conn.cursor()
+        
+        # Kiểm tra nguyên liệu có tồn tại không
+        if not get_info_by_id("NguyenLieu", "MaNL", maNL):
+            return None
+        
+        cursor.execute("DELETE FROM NguyenLieu WHERE MaNL = ?", (maNL))
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+        conn.close()   
