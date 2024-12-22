@@ -14,19 +14,45 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import CardProduct from "./CardProduct";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../../../App";
 
-const MidBar = ({ updateOrder }) => {
+const MidBar = ({ updateOrderDetail }) => {
   const { isOpen, onOpen, onClose } = useDisclosure(); // Sử dụng useDisclosure
   const [selectedProduct, setSelectedProduct] = useState(null); // Sản phẩm được chọn
   const [quantity, setQuantity] = useState(); // Số lượng sản phẩm
 
-  // Mock danh sách sản phẩm
-  const products = Array.from({ length: 20 }).map((_, index) => ({
-    id: index + 1,
-    name: `Sản phẩm ${index + 1}`,
-    price: 21000 + index * 1000,
-  }));
+  // // Mock danh sách sản phẩm
+  // const products = Array.from({ length: 20 }).map((_, index) => ({
+  //   id: index + 1,
+  //   name: `Sản phẩm ${index + 1}`,
+  //   price: 21000 + index * 1000,
+  // }));
+  // const [refresh, setRefresh] = useState(false);
+
+  // API lấy danh sách sản phẩm
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetch(BASE_URL + "/sanpham");
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error);
+        }
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, []);
+
+  // // Khi cần refresh lại dữ liệu
+  // const refreshData = () => {
+  //   setRefresh((prev) => !prev);
+  // };
 
   // Mở modal và lưu thông tin sản phẩm
   const openModal = (product) => {
@@ -41,10 +67,12 @@ const MidBar = ({ updateOrder }) => {
       alert("Số lượng phải lớn hơn hoặc bằng 1!");
       return;
     }
-    console.log(
-      `Đã cập nhật số lượng ${quantity} cho sản phẩm ${selectedProduct}`
-    );
-    updateOrder(selectedProduct.name, quantity, selectedProduct.price); // Gọi hàm updateOrder từ HomePage
+    updateOrderDetail(
+      selectedProduct.MaSP,
+      selectedProduct.TenSP,
+      quantity,
+      selectedProduct.DonGiaBan
+    ); // Gọi hàm updateOrderDetail từ HomePage
     onClose(); // Đóng modal
   };
 
@@ -73,15 +101,14 @@ const MidBar = ({ updateOrder }) => {
         >
           {products.map((product) => (
             <CardProduct
-              key={product.id}
-              name={product.name}
-              price={product.price}
+              key={product.MaSP}
+              name={product.TenSP}
+              price={product.DonGiaBan}
               onClick={() => openModal(product)}
             />
           ))}
         </Grid>
 
-        {/* Modal nhập số lượng */}
         {/* Modal nhập số lượng */}
         <Modal
           blockScrollOnMount={false}
@@ -104,13 +131,13 @@ const MidBar = ({ updateOrder }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      {selectedProduct.name}
+                      {selectedProduct.TenSP}
                     </span>
                   </Text>
                   <Input
                     type="number"
                     value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    onChange={(e) => setQuantity(e.target.value)}
                     min={1}
                     placeholder="Nhập số lượng"
                     focusBorderColor="blue.500"

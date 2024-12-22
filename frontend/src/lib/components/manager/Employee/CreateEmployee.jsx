@@ -20,12 +20,11 @@ const CreateEmployee = ({ onInput, onCancel }) => {
   // Gửi dữ liệu tạm lên component cha khi người dùng nhập
   useEffect(() => {
     onInput({
-      id: Date.now(), // Tạo ID duy nhất
-      name,
-      birthDate,
-      gender: gender === "1" ? "Nam" : "Nữ",
-      address,
-      startDate,
+      HoTenNV: name,
+      NgaySinh: birthDate,
+      GioiTinh: gender,
+      DiaChi: address,
+      NgayVaoLam: startDate,
     });
   }, [name, birthDate, gender, address, startDate]);
 

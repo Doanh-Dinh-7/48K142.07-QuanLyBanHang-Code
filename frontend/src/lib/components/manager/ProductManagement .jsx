@@ -9,10 +9,12 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import CreateProduct from "./product/CreateProduct";
 import ViewProduct from "./product/ViewProduct";
 import EditProduct from "./product/EditProduct";
+import { BASE_URL } from "../../../App";
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
@@ -21,18 +23,28 @@ const ProductManagement = () => {
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleSaveEditedProduct = (productEdited) => {
-    if (productEdited) {
-      // Tìm sản phẩm cần chỉnh sửa trong mảng
-      const index = products.findIndex(
-        (product) => product.id === productEdited.id
-      );
-      if (index === -1) return;
-      // Cập nhật sản phẩm
-      products[index] = productEdited;
-      setProducts([...products]);
-      setEditingProduct(null); // Tắt chế độ sửa
-    }
+  const [refresh, setRefresh] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetch(BASE_URL + "/sanpham");
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error);
+        }
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, [refresh]);
+
+  // Khi cần refresh lại dữ liệu
+  const refreshData = () => {
+    setRefresh((prev) => !prev);
   };
 
   // Mở thông báo xác nhận xóa
@@ -41,12 +53,35 @@ const ProductManagement = () => {
     setIsDeleteAlertOpen(true);
   };
 
-  const handleDeleteProduct = () => {
-    setProducts((prev) =>
-      prev.filter((product) => product.id !== selectedProduct.id)
-    );
-    setIsDeleteAlertOpen(false);
-    setSelectedProduct(null);
+  const handleDeleteProduct2API = () => {
+    try {
+      fetch(BASE_URL + "/sanpham/" + selectedProduct.MaSP, {
+        method: "DELETE",
+      }).then((res) => {
+        if (!res.ok) {
+          throw new Error("Xóa sản phẩm không thành công");
+        }
+        toast({
+          title: "Thành công",
+          description: "Xóa sản phẩm thành công",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        refreshData();
+      });
+    } catch (error) {
+      toast({
+        title: "Lỗi",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsDeleteAlertOpen(false);
+      setSelectedProduct(null);
+    }
   };
 
   return (
@@ -70,8 +105,8 @@ const ProductManagement = () => {
         />
         {isCreating && (
           <CreateProduct
-            onInput={(product) => {
-              setProducts([...products, product]);
+            onInput={() => {
+              refreshData();
               setIsCreating(false);
             }}
             onCancel={() => {
@@ -82,8 +117,9 @@ const ProductManagement = () => {
         {editingProduct && (
           <EditProduct
             product={editingProduct}
-            onInput={(product) => {
-              handleSaveEditedProduct(product);
+            onInput={() => {
+              refreshData();
+              setEditingProduct(null);
             }}
             onCancel={() => {
               setEditingProduct(null);
@@ -101,11 +137,15 @@ const ProductManagement = () => {
               Xóa Sản Phẩm
             </AlertDialogHeader>
             <AlertDialogBody>
-              Bạn có chắc muốn xóa sản phẩm **{selectedProduct?.name}** không?
+              Bạn có chắc muốn xóa sản phẩm **{selectedProduct?.TenSP}** không?
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={() => setIsDeleteAlertOpen(false)}>Hủy</Button>
-              <Button colorScheme="red" onClick={handleDeleteProduct} ml={3}>
+              <Button
+                colorScheme="red"
+                onClick={handleDeleteProduct2API}
+                ml={3}
+              >
                 OK
               </Button>
             </AlertDialogFooter>

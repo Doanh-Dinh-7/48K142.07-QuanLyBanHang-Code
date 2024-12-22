@@ -11,21 +11,21 @@ import {
 
 const EditEmployee = ({ employee, onInput, onCancel }) => {
   // Trạng thái nội bộ để lưu thông tin chỉnh sửa
-  const [name, setName] = useState(employee?.name || "");
-  const [birthDate, setBirthDate] = useState(employee?.birthDate || "");
-  const [gender, setGender] = useState(employee?.gender || "1"); // Mặc định là "Nam"
-  const [address, setAddress] = useState(employee?.address || "");
-  const [startDate, setStartDate] = useState(employee?.startDate || "");
+  const [name, setName] = useState(employee?.HoTenNV || "");
+  const [birthDate, setBirthDate] = useState(employee?.NgaySinh || "");
+  const [gender, setGender] = useState(employee?.GioiTinh || true); // Mặc định là "Nam"
+  const [address, setAddress] = useState(employee?.DiaChi || "");
+  const [startDate, setStartDate] = useState(employee?.NgayVaoLam || "");
 
   // Gửi dữ liệu tạm lên component cha khi người dùng nhập
   useEffect(() => {
     const updatedEmployee = {
       ...employee,
-      name,
-      birthDate,
-      gender,
-      address,
-      startDate,
+      HoTenNV: name,
+      NgaySinh: new Date(birthDate).toISOString().split("T")[0],
+      GioiTinh: gender,
+      DiaChi: address,
+      NgayVaoLam: new Date(startDate).toISOString().split("T")[0],
     };
     // Gửi dữ liệu ra ngoài thông qua onInput
     onInput(updatedEmployee);
@@ -57,7 +57,7 @@ const EditEmployee = ({ employee, onInput, onCancel }) => {
             <Text width="50%">Ngày sinh:</Text>
             <Input
               type="date"
-              value={birthDate}
+              value={new Date(birthDate).toISOString().split("T")[0]}
               onChange={(e) => {
                 setBirthDate(e.target.value);
               }}
@@ -66,9 +66,9 @@ const EditEmployee = ({ employee, onInput, onCancel }) => {
           <Flex alignItems="center">
             <Text width="50%">Giới tính:</Text>
             <RadioGroup
-              value={gender}
+              value={gender ? "1" : "0"} // Chuyển đổi true/false thành 1/0
               onChange={(value) => {
-                setGender(value);
+                setGender(value === "1"); // Chuyển đổi 1/0 thành true/false
               }}
             >
               <HStack spacing="2rem">
@@ -91,7 +91,7 @@ const EditEmployee = ({ employee, onInput, onCancel }) => {
             <Text width="50%">Ngày vào làm:</Text>
             <Input
               type="date"
-              value={startDate}
+              value={new Date(startDate).toISOString().split("T")[0]}
               onChange={(e) => {
                 setStartDate(e.target.value);
               }}

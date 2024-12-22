@@ -7,9 +7,11 @@ def create_phieuNhap(ngayLap, tongTien, tienVAT, tongCong, phuongThucThanhToan, 
     cursor = conn.cursor()
     cursor.execute("EXEC AddPhieuNhap @NgayLap = ?, @TongTien = ?, @TienVAT = ?, @TongCong = ?, @PhuongThucThanhToan = ?, @MaNCC = ?, @MaNV = ?;",
                     (ngayLap, tongTien, tienVAT, tongCong, phuongThucThanhToan, maNCC, maNV))
+    maxMaPN = cursor.execute("SELECT MAX(MaPN) FROM PhieuNhap").fetchone()[0]
     conn.commit()
     cursor.close()
     conn.close()
+    return maxMaPN
     
 def get_all_phieuNhap():
     conn = get_db_connection()

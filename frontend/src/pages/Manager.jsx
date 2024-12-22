@@ -2,10 +2,10 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import EmployeeManagement from "../lib/components/manager/EmployeeManagement";
 import ProductManagement from "../lib/components/manager/ProductManagement ";
 import MaterialManagement from "../lib/components/manager/MaterialManagement ";
-import InvoiceList from "../lib/components/manager/InvoiceList ";
+
 import { RiFolderUserLine } from "react-icons/ri";
 import { AiOutlineProduct, AiOutlineShoppingCart } from "react-icons/ai";
-import { MdManageSearch } from "react-icons/md";
+
 import { useEffect, useState } from "react";
 
 const ManagerPage = () => {
@@ -35,8 +35,6 @@ const ManagerPage = () => {
         return <ProductManagement />;
       case "material":
         return <MaterialManagement />;
-      case "invoice":
-        return <InvoiceList />;
       default:
         return null;
     }
@@ -95,22 +93,6 @@ const ManagerPage = () => {
             <AiOutlineShoppingCart size={"1.5rem"} />
             <Text as={"span"} fontSize={"0.75rem"}>
               Quản lý nguyên liệu
-            </Text>
-          </Flex>
-        </Button>
-        <Button
-          colorScheme={selectedTab === "invoice" ? "yellow" : "gray"}
-          onClick={() => setSelectedTab("invoice")}
-        >
-          <Flex
-            direction={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            style={{ padding: "0 0.5rem" }}
-          >
-            <MdManageSearch size={"1.5rem"} />
-            <Text as={"span"} fontSize={"0.75rem"}>
-              Danh sách hóa đơn
             </Text>
           </Flex>
         </Button>

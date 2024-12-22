@@ -8,8 +8,8 @@ phieuNhap_bp = Blueprint('phieuNhap', __name__)
 def create_phieuNhap_api():
     try:
         data  = request.json
-        create_phieuNhap(data['NgayLap'], data['TongTien'], data['TienVAT'], data['TongCong'], data['PhuongThucThanhToan'], data['MaNCC'], data['MaNV'])
-        return jsonify({'message': 'PhieuNhap created successfully'}), 201
+        maxMaPN = create_phieuNhap(data['NgayLap'], data['TongTien'], data['TienVAT'], data['TongCong'], data['PhuongThucThanhToan'], data['MaNCC'], data['MaNV'])
+        return jsonify({'message': 'PhieuNhap created successfully', 'MaPN': maxMaPN}), 201
     except Exception as e:
         return jsonify({'message_error': str(e)}), 500
 

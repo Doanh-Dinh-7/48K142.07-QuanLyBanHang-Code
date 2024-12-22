@@ -13,18 +13,24 @@ import {
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { TfiPencilAlt } from "react-icons/tfi";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { useEffect } from "react";
 
-const ViewProduct = ({ products, onDelete, onEdit, onAdd }) => {
+const ViewMaterial = ({ materials, onDelete, onEdit, onAdd }) => {
+  // với đơn vị tính: Ky = Ký, Hop = Hộp, Thung = Thùng
+  const unit = {
+    "Ky        ": "Ký",
+    "Hop       ": "Hộp",
+    "Thung     ": "Thùng",
+  };
+
   return (
     <Flex
       direction={"column"}
       bg={"#dbdbdb"}
-      width={"70vw"}
+      width={"55vw"}
       alignItems={"center"}
       gap={"5"}
     >
-      <Text fontWeight={"bold"}>Danh sách sản phẩm</Text>
+      <Text fontWeight={"bold"}>Danh sách nguyên liệu</Text>
       <Button
         position={"absolute"}
         marginTop={"0.5rem"}
@@ -32,7 +38,7 @@ const ViewProduct = ({ products, onDelete, onEdit, onAdd }) => {
         size="sm"
         leftIcon={<IoMdAddCircleOutline />}
         colorScheme="blue"
-        onClick={onAdd}
+        onClick={onAdd} // Gọi hàm onAdd từ props
       >
         Thêm
       </Button>
@@ -43,29 +49,39 @@ const ViewProduct = ({ products, onDelete, onEdit, onAdd }) => {
         bg="white"
         borderRadius="md"
         boxShadow="sm"
-      >
-        <Table size="sm" fontSize={"1rem"} variant="striped">
+      > 
+        <Table
+          bg="white"
+          width="50vw"
+          size="sm"
+          fontSize={"1rem"}
+          variant="striped"
+        >
           <Thead>
             <Tr>
-              <Th>Mã sản phẩm</Th>
+              <Th>Mã nguyên liệu</Th>
               <Th>Tên</Th>
-              <Th>Giá</Th>
+              <Th>Số lượng</Th>
+              <Th>Giá nhập</Th>
+              <Th>Đơn vị tính</Th>
               <Th>Hành động</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {products.map((prod) => (
-              <Tr key={prod.MaSP}>
-                <Td>{prod.MaSP}</Td>
-                <Td>{prod.TenSP}</Td>
-                <Td>{prod.DonGiaBan}</Td>
+            {materials.map((mat) => (
+              <Tr key={mat.MaNL}>
+                <Td>{mat.MaNL}</Td>
+                <Td>{mat.TenNL}</Td>
+                <Td>{mat.SoLuong}</Td>
+                <Td>{mat.DonGiaNhap}</Td>
+                <Td>{unit[mat.DonViTinh]}</Td>
                 <Td>
                   <Flex gap="2">
                     <Button
                       size="sm"
                       leftIcon={<TfiPencilAlt />}
                       colorScheme="yellow"
-                      onClick={() => onEdit(prod)}
+                      onClick={() => onEdit(mat)} // Gọi hàm onEdit từ props
                     >
                       Sửa
                     </Button>
@@ -73,7 +89,7 @@ const ViewProduct = ({ products, onDelete, onEdit, onAdd }) => {
                       size="sm"
                       leftIcon={<RiDeleteBin2Line />}
                       colorScheme="red"
-                      onClick={() => onDelete(prod)}
+                      onClick={() => onDelete(mat)} // Gọi hàm onDelete từ props
                     >
                       Xóa
                     </Button>
@@ -88,4 +104,4 @@ const ViewProduct = ({ products, onDelete, onEdit, onAdd }) => {
   );
 };
 
-export default ViewProduct;
+export default ViewMaterial;

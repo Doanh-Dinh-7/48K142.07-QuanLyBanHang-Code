@@ -8,8 +8,8 @@ hoaDon_bp = Blueprint('hoaDon', __name__)
 def create_hoaDon_api():
     try:
         data  = request.json
-        create_hoaDon(data['NgayLap'], data['TongTien'], data['PhuongThucThanhToan'], data['MaNV'])
-        return jsonify({'message': 'HoaDon created successfully'}), 201
+        maxMaHD = create_hoaDon(data['NgayLap'], data['TongTien'], data['PhuongThucThanhToan'], data['MaNV'])
+        return jsonify({'message': 'HoaDon created successfully', 'MaHD': maxMaHD}), 201
     except Exception as e:
         return jsonify({'message_error': str(e)}), 500
 

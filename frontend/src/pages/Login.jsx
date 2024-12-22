@@ -34,25 +34,27 @@ const LoginPage = () => {
           width={"20vw"}
         />
         <FormControl isRequired>
-          <Flex direction={"column"} gap={"5"}>
-            <Box>
-              <FormLabel>Tài Khoản</FormLabel>
-              <Input placeholder="Tài khoản" type="text" />
-            </Box>
-            <Box>
-              <FormLabel>Mật khẩu</FormLabel>
-              <Input placeholder="Mật khẩu" type="password" />
-            </Box>
-            <RadioGroup>
-              <HStack spacing="5vw">
-                <Radio value="QuanLy">Quản Lý</Radio>
-                <Radio value="NhanVien">Nhân Viên</Radio>
-              </HStack>
-            </RadioGroup>
-            <Button colorScheme="yellow" size="lg" type="submit">
-              Đăng nhập
-            </Button>
-          </Flex>
+          <form action="/home">
+            <Flex direction={"column"} gap={"5"}>
+              <Box>
+                <FormLabel>Tài Khoản</FormLabel>
+                <Input placeholder="Tài khoản" type="text" />
+              </Box>
+              <Box>
+                <FormLabel>Mật khẩu</FormLabel>
+                <Input placeholder="Mật khẩu" type="password" />
+              </Box>
+              <RadioGroup>
+                <HStack spacing="5vw">
+                  <Radio value="QuanLy">Quản Lý</Radio>
+                  <Radio value="NhanVien">Nhân Viên</Radio>
+                </HStack>
+              </RadioGroup>
+              <Button colorScheme="yellow" size="lg" type="submit">
+                Đăng nhập
+              </Button>
+            </Flex>
+          </form>
         </FormControl>
       </Flex>
     </Flex>

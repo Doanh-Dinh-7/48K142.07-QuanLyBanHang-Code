@@ -7,18 +7,56 @@ import {
   NumberInput,
   NumberInputField,
   Text,
+  useToast,
 } from "@chakra-ui/react";
+import { BASE_URL } from "../../../../App";
 
 const CreateProduct = ({ onInput, onCancel }) => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
+  const toast = useToast();
+  // const handleInputForm = () => {
+  //   onInput({
+  //     id: Date.now(),
+  //     name: productName,
+  //     price: parseFloat(productPrice),
+  //   });
+  // };
 
-  const handleInputForm = () => {
-    onInput({
-      id: Date.now(),
-      name: productName,
-      price: parseFloat(productPrice),
-    });
+  // Thêm sản phẩm mới vào API
+  const handleInputForm2API = async () => {
+    try {
+      const res = await fetch(BASE_URL + "/sanpham", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          TenSP: productName,
+          DonGiaBan: parseFloat(productPrice),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error);
+      }
+      toast({
+        title: "Thành công",
+        description: data.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      onInput();
+    } catch (error) {
+      toast({
+        title: "Lỗi",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -50,7 +88,7 @@ const CreateProduct = ({ onInput, onCancel }) => {
       </FormControl>
 
       <Flex justifyContent={"space-around"} gap={"5"}>
-        <Button colorScheme="teal" width="full" onClick={handleInputForm}>
+        <Button colorScheme="teal" width="full" onClick={handleInputForm2API}>
           Lưu
         </Button>
         <Button colorScheme="red" width="full" onClick={onCancel}>

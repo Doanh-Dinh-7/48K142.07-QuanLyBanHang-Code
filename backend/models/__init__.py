@@ -6,6 +6,7 @@ from .chiTietHoaDon import create_chiTietHoaDon, get_chiTietHoaDon, update_chiTi
 from .hoaDon import create_hoaDon, get_all_hoaDon, update_hoaDon, delete_hoaDon
 from .chiTietPhieuNhap import create_chiTietPhieuNhap, get_chiTietPhieuNhap, update_chiTietPhieuNhap, delete_chiTietPhieuNhap
 from .phieuNhap import create_phieuNhap, get_all_phieuNhap, update_phieuNhap, delete_phieuNhap
+from .modelR4 import check_stock, check_change_price, get_revenue_by_time, get_cost_by_time
 __all__ = [
     'create_nhanVien', 'get_all_nhanVien', 'update_nhanVien', 'delete_nhanVien',
     'create_nhaCungCap', 'get_all_nhaCungCap', 'update_nhaCungCap', 'delete_nhaCungCap',
@@ -14,5 +15,6 @@ __all__ = [
     'create_chiTietHoaDon', 'get_chiTietHoaDon', 'update_chiTietHoaDon', 'delete_chiTietHoaDon',
     'create_hoaDon', 'get_all_hoaDon', 'update_hoaDon', 'delete_hoaDon',
     'create_chiTietPhieuNhap', 'get_chiTietPhieuNhap', 'update_chiTietPhieuNhap', 'delete_chiTietPhieuNhap',
-    'create_phieuNhap', 'get_all_phieuNhap', 'update_phieuNhap', 'delete_phieuNhap'
+    'create_phieuNhap', 'get_all_phieuNhap', 'update_phieuNhap', 'delete_phieuNhap',
+    'check_stock', 'check_change_price', 'get_revenue_by_time' , 'get_cost_by_time'
 ]

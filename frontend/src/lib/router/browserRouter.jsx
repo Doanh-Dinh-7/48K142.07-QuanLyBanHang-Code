@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />, // Dùng Layout cho HomePage và các route con
-    //errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/home",

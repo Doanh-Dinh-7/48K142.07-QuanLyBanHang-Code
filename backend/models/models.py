@@ -32,14 +32,6 @@ def get_info_by_id(table, colId, id):
 
 # # ========================================================================================================
 
-# # Model R4:
-# # import model R4 từ file 
-
-
-
-
-
-
 
 if __name__ == '__main__':
     conn = get_db_connection()

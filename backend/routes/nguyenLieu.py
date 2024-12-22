@@ -11,6 +11,7 @@ def create_nguyenLieu_api():
         create_nguyenLieu(data['TenNL'], data['Soluong'], data['DonGiaNhap'], data['DonViTinh'])
         return jsonify({'message': 'NguyenLieu created successfully'}), 201
     except Exception as e:
+        print(e)
         return jsonify({'message_error': str(e)}), 500
     
 @nguyenLieu_bp.route('/api/nguyenlieu', methods=['GET'])
@@ -25,8 +26,8 @@ def get_all_nguyenLieu_api():
 def update_nguyenLieu_api(maNL):
     try:
         data  = request.json
-        result = update_nguyenLieu(maNL, data['TenNL'], data['Soluong'], data['DonGiaNhap'], data['DonViTinh'])
-        
+        result = update_nguyenLieu(maNL, data['TenNL'], data['SoLuong'], data['DonGiaNhap'], data['DonViTinh'])
+
         if result is None:
             return jsonify({"error": "NguyenLieu not found"}), 404
         

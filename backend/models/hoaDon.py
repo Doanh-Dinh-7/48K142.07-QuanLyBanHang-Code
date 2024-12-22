@@ -7,9 +7,11 @@ def create_hoaDon(ngayLap, tongTien, phuongThucThanhToan, maNV):
     cursor = conn.cursor()
     cursor.execute("EXEC AddHoaDon @NgayLap = ?, @TongTien = ?, @PhuongThucThanhToan = ?, @MaNV = ?;", 
                     (ngayLap, tongTien, phuongThucThanhToan, maNV))
+    maxMaHD = cursor.execute("SELECT MAX(MaHD) FROM HoaDon").fetchone()[0]
     conn.commit()
     cursor.close()
     conn.close()
+    return maxMaHD
     
 def get_all_hoaDon():
     conn = get_db_connection()
