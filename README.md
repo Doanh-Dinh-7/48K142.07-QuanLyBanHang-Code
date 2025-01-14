@@ -13,7 +13,7 @@ git clone https://github.com/Doanh-Dinh-7/48K142.07-QuanLyBanHang-Code.git
 2. Navigate to the project directory:
 
 ```bash
-cd deadline-store
+cd 48K142.07-QuanLyBanHang-Code
 ```
 
 3. Navigate to the backend directory:
