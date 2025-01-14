@@ -7,7 +7,7 @@ Build with Python(Flask) and JavaScript(React)
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Doanh-Dinh-7/to-do-repo.git
+git clone https://github.com/Doanh-Dinh-7/48K142.07-QuanLyBanHang-Code.git
 ```
 
 2. Navigate to the project directory:
