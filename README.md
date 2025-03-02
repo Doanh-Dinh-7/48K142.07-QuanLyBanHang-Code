@@ -2,6 +2,51 @@
 
 Build with Python(Flask) and JavaScript(React)
 
+## Screenshots
+
+### HomePage
+
+<table width="100%">
+  <tbody>
+    <tr>
+      <td width="1%"><img src="frontend/public/asset/HomePage.png"/></td>
+      <td width="1%"><img src="frontend/public/asset/AddSP.png"/></td>
+      <td width="1%"><img src="frontend/public/asset/AfterAddSP.png"/></td>
+      <td width="1%"><img src="frontend/public/asset/PayMent.png"/></td>
+    </tr>
+  </tbody>
+</table>
+
+### Management Page
+
+<table width="100%">
+  <tbody>
+    <tr>
+        <td width="1%"><img src="frontend/public/asset/MGEmployee.png"/></td>
+        <td width="1%"><img src="frontend/public/asset/MGProduct.png" /></td>
+        <td width="1%"><img src="frontend/public/asset/MGMetirial.png" /></td>
+        <td width="1%"><img src="frontend/public/asset/CheckNCC.png" /></td>
+        <td width="1%"><img src="frontend/public/asset/AddPhieuNhap.png"/></td>
+    </tr>
+    <tr>
+        <td width="1%"><img src="frontend/public/asset/CheckHoaDon.png" /></td>
+        <td width="1%"><img src="frontend/public/asset/CheckPhieuNhap.png" /></td>
+    </tr>
+  </tbody>
+</table>
+
+### Static Page
+
+<table width="100%">
+  <tbody>
+    <tr>
+        <td width="1%"><img src="frontend/public/asset/CheckHoaDon.png" /></td>
+        <td width="1%"><img src="frontend/public/asset/CheckPhieuNhap.png" /></td>
+    </tr>
+  </tbody>
+</table>
+
+
 ### Run the App Locally
 
 1. Clone the repository:

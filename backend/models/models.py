@@ -1,6 +1,6 @@
 import pyodbc
 # Thay đổi các thông số bên dưới để phù hợp với thông tin SQL Server của bạn
-server = 'ACERN5\SERVER'
+server = 'ACERN5'
 database = 'HighlandsCoffee'
 username = 'sa'
 password = '1111'
