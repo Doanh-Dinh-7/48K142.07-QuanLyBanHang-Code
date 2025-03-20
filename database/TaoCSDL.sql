@@ -18,14 +18,24 @@ CREATE TABLE NhanVien (
     NgaySinh DATETIME NOT NULL,
     GioiTinh BIT NOT NULL,
     DiaChi NVARCHAR(100) NOT NULL,
-    NgayVaoLam DATETIME NOT NULL
+    NgayVaoLam DATETIME NOT NULL,
+	AnhMinhHoa NVARCHAR(MAX) NULL
+);
+
+-- Tạo bảng DanhMucSanPham
+CREATE TABLE DanhMucSanPham (
+    MaDanhMuc CHAR(10) CONSTRAINT PK_DanhMucSanPham_MaDanhMuc PRIMARY KEY,
+    TenDanhMuc NVARCHAR(50) NOT NULL
 );
 
 -- Tạo bảng SanPham
 CREATE TABLE SanPham (
     MaSP CHAR(10) CONSTRAINT PK_SanPham_MaSP PRIMARY KEY,
     TenSP NVARCHAR(50) NOT NULL,
-    DonGiaBan INT NOT NULL
+    DonGiaBan INT NOT NULL,
+	AnhMinhHoa NVARCHAR(MAX) NULL,
+	MaDanhMuc CHAR(10) NOT NULL,
+	CONSTRAINT FK_SanPham_DanhMucSanPham FOREIGN KEY (MaDanhMuc) REFERENCES DanhMucSanPham(MaDanhMuc)
 );
 
 -- Tạo bảng NguyenLieu
@@ -34,8 +44,8 @@ CREATE TABLE NguyenLieu (
     TenNL NVARCHAR(50) NOT NULL,
     SoLuong INT NOT NULL,
 	DonGiaNhap INT NOT NULL,
-    DonViTinh CHAR(10) NOT NULL
-
+    DonViTinh CHAR(10) NOT NULL,
+	AnhMinhHoa NVARCHAR(MAX) NULL
 );
 
 -- Tạo bảng NhaCungCap
