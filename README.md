@@ -2,6 +2,9 @@
 
 Build with Python(Flask) and JavaScript(React)
 
+## Git Diagram
+<img src="frontend/public/CafeMS-Web.png"/>
+
 ## Screenshots
 
 ### HomePage
