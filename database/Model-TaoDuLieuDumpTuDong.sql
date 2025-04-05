@@ -150,11 +150,12 @@ begin
 
 	while @i <= 1000
 	begin
-		insert into SanPham (MaSP,TenSP,DonGiaBan)
+		insert into SanPham (MaSP,TenSP,DonGiaBan, MaDanhMuc)
 		values (
 				dbo.fBornSanPhamId(),
 				N'San pham ' + CAST(@i as varchar(5)),
-				CAST((RAND()*100000) as int)
+				CAST((RAND()*100000) as int),
+				'DM'+ RIGHT('00000000'+CAST( (FLOOR(1 + (RAND() * 5))) as varchar(8)),8)
 				)
 
 		if @@rowcount <= 0 
@@ -427,12 +428,92 @@ begin
 end
 
 exec spInsertValueChiTietHoaDon
-delete ChiTietHoaDon
-select * from ChiTietHoaDon;
+
+--IX/ Model tạo dữ liệu dump cho bảng TaiKhoan:
+-- Model tạo dữ liệu dump
+create or alter proc spInsertValueTaiKhoan
+as
+begin
+    set nocount on;
+
+    declare @Index int = 1;
+    declare @MaxAccounts int = 10;  -- Số lượng tài khoản cần thêm
+
+    while @Index <= @MaxAccounts
+    begin
+        declare @MaTK CHAR(10)
+		select @MaTK = MAX(MaTK) from TaiKhoan
+		if @MaTK is null
+			set @MaTK = 'HD00000001'
+		else
+			set @MaTK = 'TK' + RIGHT('00000000'+ CAST((CAST(RIGHT(@MaTK,8) as int) + 1) as varchar(8)),8)
+        declare @TenDangNhap NVARCHAR(50) = 'user' + CAST(@Index AS NVARCHAR);
+        declare @MatKhau NVARCHAR(MAX) = CONVERT(NVARCHAR(MAX), HASHBYTES('SHA2_256', 'password' + CAST(@Index AS NVARCHAR)), 1);
+        declare @VaiTro NVARCHAR(20) = CASE WHEN @Index % 2 = 0 THEN 'Admin' ELSE 'NhanVien' END;
+        declare @TrangThai BIT = CASE WHEN @Index % 3 = 0 THEN 0 ELSE 1 END;
+        declare @MaNV CHAR(10) = (SELECT TOP 1 MaNV FROM NhanVien ORDER BY NEWID());
+
+        insert into TaiKhoan (MaTK, TenDangNhap, MatKhau, VaiTro, TrangThai, MaNV)
+        values (@MaTK, @TenDangNhap, @MatKhau, @VaiTro, @TrangThai, @MaNV);
+
+        set @Index = @Index + 1;
+    end;
+end;
+
+exec spInsertValueTaiKhoan
+
+--X/ Model tạo dữ liệu dump cho bảng DanhMuc:
+CREATE or alter FUNCTION fBornDanhMucId()
+RETURNS CHAR(10)
+AS
+BEGIN
+    DECLARE @NewID CHAR(10);
+    DECLARE @MaxID INT;
+
+    -- Lấy giá trị số lớn nhất từ MaDanhMuc
+    SELECT @MaxID = CAST(RIGHT(ISNULL(MAX(MaDanhMuc), 'DM00000000'), 8) AS INT) 
+    FROM DanhMucSanPham;
+
+    -- Tăng giá trị lên 1 và tạo mã mới
+    SET @NewID = 'DM' + RIGHT('00000000' + CAST(@MaxID + 1 AS VARCHAR), 8);
+
+    RETURN @NewID;
+END;
+
+-- Model tạo dữ liệu dump
+CREATE or alter PROC spInsertValueDanhMuc
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Index INT = 1;
+    DECLARE @MaxCategories INT = 5; -- Số lượng danh mục cần thêm
+    DECLARE @MaDanhMuc CHAR(10);
+    DECLARE @TenDanhMuc NVARCHAR(50);
+
+    WHILE @Index <= @MaxCategories
+    BEGIN
+        -- Gọi hàm để lấy mã danh mục mới
+        SET @MaDanhMuc = dbo.fBornDanhMucId();
+        
+        -- Tạo tên danh mục mẫu
+        SET @TenDanhMuc = N'Danh mục ' + CAST(@Index AS NVARCHAR);
+
+        -- Chèn dữ liệu vào bảng DanhMucSanPham
+        INSERT INTO DanhMucSanPham (MaDanhMuc, TenDanhMuc)
+        VALUES (@MaDanhMuc, @TenDanhMuc);
+
+        SET @Index = @Index + 1;
+    END;
+END;
+
+exec spInsertValueDanhMuc
 
 select * from NhanVien
+select * from TaiKhoan
 select * from NhaCungCap
 select * from NguyenLieu
+select * from DanhMucSanPham
 select * from SanPham
 select * from PhieuNhap
 select * from ChiTietPhieuNhap

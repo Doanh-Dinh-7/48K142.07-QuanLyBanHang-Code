@@ -101,3 +101,14 @@ CREATE TABLE ChiTietPhieuNhap (
     CONSTRAINT FK_ChiTietPhieuNhap_PhieuNhap FOREIGN KEY (MaPN) REFERENCES PhieuNhap(MaPN),
     CONSTRAINT FK_ChiTietPhieuNhap_NguyenLieu FOREIGN KEY (MaNL) REFERENCES NguyenLieu(MaNL)
 );
+
+-- Tạo bảng TaiKhoan
+CREATE TABLE TaiKhoan (
+    MaTK CHAR(10) CONSTRAINT PK_TaiKhoan_MaTK PRIMARY KEY,
+    TenDangNhap NVARCHAR(50) NOT NULL UNIQUE,
+    MatKhau NVARCHAR(MAX) NOT NULL,
+    VaiTro NVARCHAR(20) NOT NULL CHECK (VaiTro IN ('Admin', 'NhanVien')),
+    TrangThai BIT NOT NULL DEFAULT 1,  -- 1: Hoạt động, 0: Khóa
+    MaNV CHAR(10) NULL,
+    CONSTRAINT FK_TaiKhoan_NhanVien FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
